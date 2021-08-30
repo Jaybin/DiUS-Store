@@ -1,0 +1,75 @@
+<div class="container p-2">
+  <table class="table" *ngIf="productsCart.length > 0">
+    <thead>
+      <tr class="bg-light">
+        <th scope="col">#</th>
+        <th scope="col">SKU</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Discount</th>
+        <th scope="col">Total</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of productsCart;">
+        <td scope="row">{{product.id}}</td>
+        <td>{{product.sku}}</td>
+        <td>{{product.name}}</td>
+        <td>{{product.price | currency}}</td>
+        <td>{{product.quantity}}</td>
+        <td>
+          <span *ngIf="+product.discount > 0">(-{{product.discount | currency}})</span>
+          <span *ngIf="+product.discount <= 0">$0.00</span>
+        </td>
+        <td>{{product.total | currency}}</td>
+        <td>
+          <button type="button" class="btn btn-danger btn-sm" title="Remove from cart" (click)="removeFromCart(product)">
+            <fa-icon [icon]="faTrashAlt"></fa-icon>
+          </button>
+        </td>
+      </tr>
+      <tr class="bg-info">
+        <td colspan="5">Total</td>
+        <td>
+          <span *ngIf="discount > 0">(-{{discount | currency}})</span>
+          <span *ngIf="discount <= 0">$0.00</span>
+        </td>
+        <td>{{total | currency}}</td>
+        <td>
+          <button type="button" class="btn btn-success btn-sm" title="Proceed to payment" (click)="proceedToPayment()">
+            <fa-icon [icon]="faWallet"></fa-icon>
+          </button>
+        </td>
+      </tr>
+      <ng-container *ngIf="freebiesCart.length > 0">
+        <tr><td colspan="8"></td></tr>
+        <tr class="bg-light">
+          <td colspan="8">
+            <fa-icon [icon]="faGifts"></fa-icon>
+            <strong class="mx-2">Freebies Received</strong>
+          </td>
+        </tr>
+        <tr *ngFor="let product of freebiesCart">
+          <td scope="row">{{product.id}}</td>
+          <td>{{product.sku}}</td>
+          <td>{{product.name}}</td>
+          <td>{{product.price | currency}}</td>
+          <td>{{product.quantity}}</td>
+          <td>{{product.total | currency}}</td>
+          <td>
+            <span *ngIf="+product.discount > 0">(-{{product.discount | currency}})</span>
+            <span *ngIf="+product.discount <= 0">0</span>
+          </td>
+          <td></td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <div class="alert alert-info" role="alert" *ngIf="productsCart.length <= 0">
+    <span>No products in cart.
+      Please add products from <a routerLink="/catalogue">Catalogue</a>
+    </span>
+  </div>
+</div>
